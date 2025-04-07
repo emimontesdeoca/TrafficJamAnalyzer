@@ -7,17 +7,23 @@ var sqldb = builder.AddSqlServer("sql")
     .AddDatabase("sqldb");
 
 var apiService = builder.AddProject<Projects.TrafficJamAnalyzer_Microservices_WebApiService>("apiservice")
-    .WithReference(sqldb);
+    .WithReference(sqldb)
+    .WaitFor(sqldb);
 
-var aiService = builder.AddProject<Projects.TrafficJamAnalyzer_Microservices_AiApiService>("aiservice");
+var aiService = builder.AddProject<Projects.TrafficJamAnalyzer_Microservices_AiApiService>("aiservice")
+    .WaitFor(sqldb);
 
-var scrapService = builder.AddProject<Projects.TrafficJamAnalyzer_Microservices_ScraperApiService>("scrapservice");
+var scrapService = builder.AddProject<Projects.TrafficJamAnalyzer_Microservices_ScraperApiService>("scrapservice")
+    .WaitFor(sqldb);
 
 var worker = builder.AddProject<Projects.TrafficJamAnalyzer_Workers_Analyzer>("worker")
     .WithExternalHttpEndpoints()
     .WithReference(apiService)
     .WithReference(aiService)
-    .WithReference(scrapService);
+    .WithReference(scrapService)
+    .WaitFor(apiService)
+    .WaitFor(aiService)
+    .WaitFor(scrapService);
 
 
 builder.AddProject<Projects.TrafficJamAnalyzer_Web>("webfrontend")

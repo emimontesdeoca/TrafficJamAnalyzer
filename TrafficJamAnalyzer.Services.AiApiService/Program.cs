@@ -44,15 +44,17 @@ app.MapGet("/analyze/{identifier}", async (string identifier, ILogger<Program> l
     var history = new ChatHistory();
     history.AddSystemMessage("You are a useful assistant that replies using a direct style");
 
-    var imageUrl = $"http://cic.tenerife.es/e-Traffic3/data/{identifier}.jpg";
+    var imageUrl = $"https://cic.tenerife.es/e-Traffic3/data/{identifier}.jpg";
 
+    var httpClient = new HttpClient();
+    var data = await httpClient.GetByteArrayAsync(imageUrl);
 
     // "Prompt": "The image I'm going to provide you is an image from a CCTV that shows a road, I need you to give me a JSON object with 'Title' which is title in the top left and 'Traffic' which is an integer from 0 to 100 which shows the amout of traffic jam and the 'Date' that is on the bottom right, please only provide the JSON result and nothing else. Return only the json object without any markdown. If you a lot of lanes, please focus on the one that is busy when checking for the traffic, so, if you see 4 lanes and only 2 are full, it means that the traffic is jammed."
 
     var collectionItems = new ChatMessageContentItemCollection
     {
         new TextContent(prompt),
-        new ImageContent { Uri = new Uri(imageUrl) },
+        new ImageContent { Data = data, MimeType = "image/jpg" },
     };
 
     history.AddUserMessage(collectionItems);
