@@ -1,4 +1,4 @@
-# TrafficJamAnalyzer
+# TrafficJamAnalyzer 🚦
 
 TrafficJamAnalyzer is an advanced tool designed to help monitor and analyze traffic conditions by processing images from CCTV cameras around the roads of Tenerife. By utilizing artificial intelligence (AI) with Semantic Kernel and OpenAI, the application accurately assesses traffic density and identifies locations with potential traffic jams.
 
@@ -138,7 +138,3 @@ We welcome contributions to TrafficJamAnalyzer!
 Distributed under the MIT License. See `LICENSE` for more information.
 
 Thank you for using TrafficJamAnalyzer! We hope it helps you keep the roads of Tenerife traffic-free.
-
----
-
-Feel free to customize and expand this README as needed!
